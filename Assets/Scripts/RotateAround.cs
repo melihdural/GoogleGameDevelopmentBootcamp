@@ -2,24 +2,26 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class RotateAround : MonoBehaviour
 {
-    [SerializeField] private Transform sunTransform;
+    [SerializeField] private Transform _sunTransform;
+    [SerializeField] private float _turnSpeed;
+    [SerializeField] private GameObject _earth;
+    [SerializeField] private GameObject _moon;
 
-    [SerializeField] private float turnSpeed;
+    private float _moonOffset = 1.78f;
 
-    private float moonOffset = 1.78f;
+    private Vector3 _earthPosition;
 
-    private Vector3 earthPosition;
-
-    private Vector3 moonPosition;
+    private Vector3 _moonPosition;
 
     private void Awake()
     {
         //Records the starting positions of the earth and the moon.
-        earthPosition = GameObject.Find("Earth").transform.position;
-        moonPosition = GameObject.Find("Moon").transform.position;
+        _earthPosition = GameObject.Find("Earth").transform.position;
+        _moonPosition = GameObject.Find("Moon").transform.position;
 
     }
     private void Start()
@@ -29,23 +31,23 @@ public class RotateAround : MonoBehaviour
     }
     IEnumerator PlanetRotation()
     {
-        //Guarding Clause
-        if (!sunTransform)
+        while (true)
         {
-            yield break;
+            //Guarding Clause
+            if (!_sunTransform)
+            {
+                yield break;
+            }
+        
+            //It rotates the planets on the axis of the sun.
+            transform.RotateAround(_sunTransform.position, Vector3.up, _turnSpeed*Time.deltaTime);
+        
+            //Keeps the moon stable around the earth
+            _moonPosition.x = _earthPosition.x - _moonOffset;
+        
+            //End of frame
+            yield return new WaitForEndOfFrame();
         }
-        
-        //It rotates the planets on the axis of the sun.
-        transform.RotateAround(sunTransform.position, Vector3.up, turnSpeed*Time.deltaTime);
-        
-        //Keeps the moon stable around the earth
-        moonPosition.x = earthPosition.x - moonOffset;
-        
-        //End of frame
-        yield return new WaitForEndOfFrame();
-        
-        //Start again the movement function
-        StartCoroutine(PlanetRotation());
     }
     
 }
