@@ -2,10 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class TurnOwnAxis : MonoBehaviour
 {
-    [SerializeField] private float turnSpeed;
+    [SerializeField] private float _turnSpeed;
 
     private void Start()
     {
@@ -14,13 +15,14 @@ public class TurnOwnAxis : MonoBehaviour
     }
     IEnumerator RotationOwnAxis()
     {
-        //It turns the planets on their own axis.
-        transform.Rotate(Vector3.up, turnSpeed);
+        while (true)
+        {
+
+            //It turns the planets on their own axis.
+            transform.Rotate(Vector3.up, _turnSpeed * Time.deltaTime);
         
-        //End of Frame
-        yield return new WaitForEndOfFrame();
-        
-        //Start again the movement function
-        StartCoroutine(RotationOwnAxis());
+            //End of Frame
+            yield return new WaitForEndOfFrame();
+        }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AstreoidsTurn : MonoBehaviour
 {
-    [SerializeField] private float turnSpeed;
+    private float turnSpeed = 0.5f;
 
     private void Start()
     {
@@ -13,13 +13,13 @@ public class AstreoidsTurn : MonoBehaviour
     }
     IEnumerator RotationOwnAxis()
     {
-        //It turns the actreoids on their own axis.
-        transform.Rotate(Vector3.forward, turnSpeed);
+        while (true)
+        {
+            //It turns the actreoids on their own axis.
+            transform.Rotate(Vector3.forward, turnSpeed * Time.deltaTime);
         
-        //End of Frame
-        yield return new WaitForEndOfFrame();
-        
-        //Start again the movement function
-        StartCoroutine(RotationOwnAxis());
+            //End of Frame
+            yield return new WaitForEndOfFrame();
+        }
     }
 }

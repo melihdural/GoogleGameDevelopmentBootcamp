@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class LapCounter : MonoBehaviour
 {
-    private int lap;
+    private int _lap;
     private void Awake()
     {
         //Turns off the gravity feature in the rigidbody component before the game starts.
@@ -19,8 +19,11 @@ public class LapCounter : MonoBehaviour
         //If the invisible start object in the scene is touched, it increases the number of rounds and prints it on the screen.
         if (other.CompareTag("Start"))
         {
-            lap++;
-            Debug.Log($"{gameObject.name} has completed one full orbit around the sun. Its {lap} round. ", gameObject);
+            //Increases lap count.
+            _lap++;
+            
+            //Prints the number of laps on the Console.
+            Debug.Log($"{gameObject.name} has completed one full orbit around the sun. Its {_lap} round. ", gameObject);
         }
     }
 }
