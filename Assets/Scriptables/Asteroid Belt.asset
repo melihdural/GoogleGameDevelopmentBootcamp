@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c39beca970abb2c47a8311150e0d91e7, type: 3}
+  m_Name: Asteroid Belt
+  m_EditorClassIdentifier: 
+  CelestialName: Asteroid
+  CelestialDescription: Asteroid Belt
+  CelestialPrefab: {fileID: 4034410846299989475, guid: c0aedbee0212d4ba08d6e85a65854d22, type: 3}
+  CelestialTarget: []
+  _asteroidRotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}

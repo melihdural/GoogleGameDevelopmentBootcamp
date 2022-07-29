@@ -7,43 +7,82 @@ using Random = UnityEngine.Random;
 
 public class SpawnManager : MonoBehaviour
 {
-    public static SpawnManager instance;
+    [HideInInspector]
+    public static GameObject ghostPlanet;
     
-    [SerializeField] private GameObject _meteorPrefab;
-    [SerializeField] private GameObject[] _planets;
-    private Vector3 _meteorSpawnPos;
 
-    private float xRange = 45;
-    private float yRange = 50;
-    private float zRange = 30;
+    private void Awake()
+    {
+        LevelInitializer.SpawnLevel += SpawnLevel;
+        InputManager.SpawnMeteor += SpawnMeteor;
+    }
     
-    public GameObject[] Planets
+    private void OnDestroy()
     {
-        get => _planets;
+        InputManager.SpawnMeteor -= SpawnMeteor;
+        LevelInitializer.SpawnLevel -= SpawnLevel;
     }
-
-    private void Start()
+    
+    
+    public static void SpawnMeteor(DataHandler data)
     {
-        //Instance
-        instance = this;
+        float randomTetha = Random.Range(0f, 360f);
+        Vector3 randomMetorPosition = GetRandomPositionOnOrbit(randomTetha, Random.Range(-50f, 50f));
+       
+        var meteorObject = Instantiate(data.MeteorData.CelestialPrefab, randomMetorPosition , Quaternion.identity);
     }
-
-    private void Update()
+    
+    void SpawnLevel(DataHandler data)
     {
-        //When pressing space, spawn meteor
-        if (Input.GetKeyDown(KeyCode.Space))
+        var levelData = data.LevelData;
+        
+        foreach (var sun in levelData.SunGroups)
         {
-            SpawnMeteor();
+            Vector3 sunSpawnPosition = sun.Sun._sunPosition;
+            var sunObject = Instantiate(sun.Sun.CelestialPrefab, sunSpawnPosition, Quaternion.identity);
+            
+            foreach (var asteroid in sun.CelestialDatas)
+            {
+                Vector3 asteroidSpawnPosition = sun.Sun._sunPosition;
+                var asteroidObject = Instantiate(asteroid.Asteroids.CelestialPrefab, asteroidSpawnPosition, asteroid.Asteroids._asteroidRotation);
+            }
+            
+            foreach (var planet in sun.Planets)
+            {
+                float randomTetha = Random.Range(0f, 360f);
+                Vector3 randomOrbitPosition = sunSpawnPosition + GetRandomPositionOnOrbit(randomTetha, planet.Planet._distanceToSun);
+                
+                var planetObject = Instantiate(planet.Planet.CelestialPrefab, randomOrbitPosition, Quaternion.identity);
+                
+                ghostPlanet = Instantiate(levelData._ghostPlanet, planetObject.transform.position, Quaternion.identity);
+                
+                if (planetObject.GetComponent<RotateAround>() != null)
+                {
+                    planetObject.GetComponent<RotateAround>().TargetObject = sunObject;
+                }
+
+                foreach (var moon in planet.Moons)
+                {
+                    randomTetha = Random.Range(0f, 360f);
+                    randomOrbitPosition = planetObject.transform.position + GetRandomPositionOnOrbit(randomTetha, moon.Moon.distanceToPlanet);
+                    
+                    var moonObject = Instantiate(moon.Moon.CelestialPrefab, randomOrbitPosition, Quaternion.identity);
+                    
+                    moonObject.transform.parent = planetObject.transform;
+                    
+                    if (moonObject.GetComponent<RotateAround>() != null)
+                    {
+                        moonObject.GetComponent<RotateAround>().TargetObject = planetObject;
+                    }
+                }
+            }
         }
     }
     
-
-    private void SpawnMeteor()
+    
+    private static Vector3 GetRandomPositionOnOrbit(float tetha, float radius)
     {
-        //Set random spawn position
-        _meteorSpawnPos = new Vector3(Random.Range(-xRange, xRange), Random.Range(-yRange, yRange), Random.Range(-zRange, zRange));
-        
-        //Spawn meteor
-        Instantiate(_meteorPrefab, _meteorSpawnPos, Quaternion.identity); 
+        return new Vector3(Mathf.Cos(tetha * Mathf.Deg2Rad) * radius, 0, Mathf.Sin(tetha * Mathf.Deg2Rad) * radius);
     }
+
 }

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c39beca970abb2c47a8311150e0d91e7, type: 3}
+  m_Name: Meteor
+  m_EditorClassIdentifier: 
+  CelestialName: Meteor
+  CelestialDescription: Asteroid
+  CelestialPrefab: {fileID: 3746823770388145747, guid: 5712e222f6c37934ba18c5c1e1af3323, type: 3}
+  CelestialTarget:
+  - {fileID: 2576122897419489909, guid: 300f80108a63f48618cb4a1c8b8c1e86, type: 3}
+  - {fileID: 7327492936879925872, guid: 7e4bfb3c6ba1d4bc4ba31d585abdae0f, type: 3}
+  - {fileID: 4533567555658754421, guid: 1818e1a170ef94c3aacee2ba50057521, type: 3}
+  - {fileID: 6455432306187034219, guid: ab152f61198d54532ae39108e616ff59, type: 3}
+  - {fileID: 8862035712464355228, guid: 5d1442ad8c11442988e0eca5d8af73f0, type: 3}
+  - {fileID: 805225241800088507, guid: baebbc833ecda42dd8a75966c9f62420, type: 3}
+  - {fileID: 2364346190250485781, guid: b4201d402613a4464b35c805dafcca62, type: 3}
+  - {fileID: 7730314095189481187, guid: c91342f6e3afc48fd958056404ead345, type: 3}
+  - {fileID: 1967462816601557944, guid: 835acc1a9ebe24c0fa3854c99346f9cd, type: 3}
+  _asteroidRotation: {x: 0, y: 0, z: 0, w: 0}
